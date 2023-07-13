@@ -52,18 +52,62 @@ const FoodMenu = ({ currentUser }) => {
     createMenuItem();
   };
 
-  const handleEdit = async (id, updatedData) => {
+  const handleEdit = (id) => {
+    // Set the editing state for the item with the provided id
+    setEditItemId(id);
+
+    // Populate the form fields with the current values
+    const itemToEdit = menuItems.find((item) => item.id === id);
+    setName(itemToEdit.name);
+    setIngredients(itemToEdit.ingredients);
+    setAllergies(itemToEdit.allergies);
+    setDescription(itemToEdit.description);
+    setCourse(itemToEdit.course);
+    setImage_url(itemToEdit.image_url);
+  };
+
+  const handleEditSubmit = async (e, id) => {
+    e.preventDefault();
+
+    // Find the item being edited
+    const itemToEdit = menuItems.find((item) => item.id === id);
+
     try {
-      await fetch(`http://localhost:8000/menu-items/${id}/`, {
+      const response = await fetch(`http://localhost:8000/menu-items/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify({
+          name,
+          ingredients,
+          allergies,
+          description,
+          course,
+          image_url,
+        }),
       });
-      fetchMenuItems();
+      if (response.ok) {
+        const updatedItem = await response.json();
+
+        // Update the menu items array with the edited item
+        setMenuItems((prevItems) => {
+          return prevItems.map((item) => (item.id === id ? updatedItem : item));
+        });
+
+        // Reset the form fields and editing state
+        setEditItemId(null);
+        setName('');
+        setIngredients('');
+        setAllergies('');
+        setDescription('');
+        setCourse('');
+        setImage_url('');
+      } else {
+        console.error('Error updating menu item:', response.status);
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error updating menu item:', error);
     }
   };
 
@@ -85,9 +129,9 @@ const FoodMenu = ({ currentUser }) => {
         const token = localStorage.getItem('token');
       try {
         const response = await fetch('http://localhost:8000/menu-items/', {
-            headers: {
-                Authorization: `Token ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Token ${token}`,
+            // },
         });
         if (response.ok) {
           const data = await response.json();
@@ -157,22 +201,50 @@ const FoodMenu = ({ currentUser }) => {
         {menuItems.map((menuItem) => (
           <div key={menuItem.id} className="menu-card">
             <div className="item-image">
-                <img src={menuItem.image_url} alt={menuItem.name} />
-                <h3 className="item-name">{menuItem.name}</h3>
+              {editItemId === menuItem.id ? (
+                <form onSubmit={(e) => handleEditSubmit(e, menuItem.id)}>
+                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                  <input
+                    type="text"
+                    value={ingredients}
+                    onChange={(e) => setIngredients(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    value={allergies}
+                    onChange={(e) => setAllergies(e.target.value)}
+                  />
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+                  <input
+                    type="text"
+                    value={image_url}
+                    onChange={(e) => setImage_url(e.target.value)}
+                  />
+                  <button type="submit">Save</button>
+                </form>
+              ) : (
+                <div>
+                  <img src={menuItem.image_url} alt={menuItem.name} />
+                  <h3 className="item-name">{menuItem.name}</h3>
+                </div>
+              )}
             </div>
             <div className="item-info">
-            <p>Ingredients: {menuItem.ingredients}</p>
-            <p>Allergies: {menuItem.allergies}</p>
-            <p>Description: {menuItem.description}</p>
-            <p>Course: {menuItem.course}</p>
+              <p>Ingredients: {menuItem.ingredients}</p>
+              <p>Allergies: {menuItem.allergies}</p>
+              <p>Description: {menuItem.description}</p>
+              <p>Course: {menuItem.course}</p>
+              {currentUser && currentUser.group === 'Manager' && (
+                    <div>
+                      <button onClick={() => handleEdit(menuItem.id)}>Edit</button>
+                      <button onClick={() => handleDelete(menuItem.id)}>Delete</button>
+                    </div>
+                  )}
             </div>
-            
-            {currentUser && currentUser.group === 'Manager' && (
-                <div>
-                    <button onClick={() => handleEdit(menuItem.id)}>Edit</button>
-                    <button onClick={() => handleDelete(menuItem.id)}>Delete</button>
-                </div>
-            )}
           </div>
         ))}
       </div>

@@ -91,10 +91,34 @@ function App() {
     }
   };
 
+  // Logout
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/logout/', {
+        method: 'GET', 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${localStorage.getItem('token')}`,
+        },
+      });
+      if (response.ok) {
+        // Logout successful
+        localStorage.removeItem('token');
+        setCurrentUser(null);
+      } else {
+        // Logout failed
+        console.log('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <div className="App">
-      <Header currentUser={currentUser} />
-      <Main onLogin={handleLogin} onSignup={handleSignup} currentUser={currentUser} />
+      <Header currentUser={currentUser} logOut={handleLogout} />
+      <Main onLogin={handleLogin} onSignup={handleSignup} currentUser={currentUser}  />
       <Footer />
     </div>
   );
