@@ -7,7 +7,9 @@ const FoodMenu = ({ currentUser }) => {
   const [allergies, setAllergies] = useState('');
   const [description, setDescription] = useState('');
   const [course, setCourse] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [image_url, setImage_url] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [editItemId, setEditItemId] = useState(null);
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -25,19 +27,20 @@ const FoodMenu = ({ currentUser }) => {
             allergies,
             description,
             course,
-            imageUrl,
+            image_url,
           }),
         });
         if (response.ok) {
           const newItem = await response.json();
           setMenuItems([...menuItems, newItem]);
+          setShowForm(false);
           // Reset the form fields
           setName('');
           setIngredients('');
           setAllergies('');
           setDescription('');
           setCourse('');
-          setImageUrl('');
+          setImage_url('');
         } else {
           console.error('Error creating menu item:', response.status);
         }
@@ -89,6 +92,7 @@ const FoodMenu = ({ currentUser }) => {
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
+          console.log(menuItems)
         } else {
           console.error('Error fetching menu items:', response.status);
         }
@@ -105,62 +109,73 @@ const FoodMenu = ({ currentUser }) => {
     <div className="foodMenu">
       <h1>Dinner</h1>
       {currentUser && currentUser.group === 'Manager' && (
-      
-      <form onSubmit={handleSubmit}>
-        <label>
-            Name:
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        </label>
-        <br />
-        <label>
-            Ingredients:
-            <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} />
-        </label>
-        <br />
-        <label>
-            Allergies:
-            <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} />
-        </label>
-        <br />
-        <label>
-            Description:
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-        </label>
-        <br />
-        <label>
-            Course:
-            <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
-        </label>
-        <br />
-        <label>
-            Image URL:
-            <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Create Menu Item</button>
-      </form>
+        <div>
+            {!showForm && (
+            <button onClick={() => setShowForm(true)}>Add Menu Item</button>
+          )}
+            {showForm && (
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Name:
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </label>
+                    <br />
+                    <label>
+                        Ingredients:
+                        <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} />
+                    </label>
+                    <br />
+                    <label>
+                        Allergies:
+                        <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} />
+                    </label>
+                    <br />
+                    <label>
+                        Description:
+                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </label>
+                    <br />
+                    <label>
+                        Course:
+                        <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+                    </label>
+                    <br />
+                    <label>
+                        Image URL:
+                        <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} />
+                    </label>
+                    <br />
+                    <button type="submit">Create Menu Item</button>
+                </form>
+            )}
+        </div>
 
 
       )}
       <h2>Menu Items</h2>
-      <ul>
+      <div className="menu-cards">
         {menuItems.map((menuItem) => (
-          <li key={menuItem.id}>
-            <h3>{menuItem.name}</h3>
+          <div key={menuItem.id} className="menu-card">
+            <div className="item-image">
+                <img src={menuItem.image_url} alt={menuItem.name} />
+                <h3 className="item-name">{menuItem.name}</h3>
+            </div>
+            <div className="item-info">
             <p>Ingredients: {menuItem.ingredients}</p>
             <p>Allergies: {menuItem.allergies}</p>
             <p>Description: {menuItem.description}</p>
             <p>Course: {menuItem.course}</p>
-            <img src={menuItem.imageUrl} alt={menuItem.name} />
+            </div>
+            
             {currentUser && currentUser.group === 'Manager' && (
                 <div>
                     <button onClick={() => handleEdit(menuItem.id)}>Edit</button>
                     <button onClick={() => handleDelete(menuItem.id)}>Delete</button>
                 </div>
             )}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
