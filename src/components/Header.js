@@ -13,6 +13,7 @@ const Header = ({ currentUser, logOut }) => {
       <div className="navbar"> 
         <Link className="navbar-link" to='/'>Home</Link>
         <Link className="navbar-link" to='/foodmenu'>Dinner</Link>
+        <Link className="navbar-link" to='/cocktails'>Cocktails</Link>
         {currentUser ? null : <Link className="navbar-link" to='/login'>Log In</Link>}
         {currentUser && <button onClick={logOut}>Logout</button>}
       </div>
