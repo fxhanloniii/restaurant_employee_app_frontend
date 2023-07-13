@@ -151,42 +151,39 @@ const FoodMenu = ({ currentUser }) => {
 
   return (
     <div className="foodMenu">
-      <h1>Dinner</h1>
+      <div className="dinnerImageHero">
+        <img src="/images/image2.jpg" alt="table with a view" className="heroImage" /> 
+        <h1 className="dinnerText">Dinner</h1>
+      </div> 
       {currentUser && currentUser.group === 'Manager' && (
-        <div>
+        <div className="buttonForm">
             {!showForm && (
             <button onClick={() => setShowForm(true)}>Add Menu Item</button>
           )}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <label>
-                        Name:
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
                     </label>
                     <br />
                     <label>
-                        Ingredients:
-                        <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} />
+                        <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} placeholder="Ingredients" />
                     </label>
                     <br />
                     <label>
-                        Allergies:
-                        <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} />
+                        <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} placeholder="Allergies"/>
                     </label>
                     <br />
                     <label>
-                        Description:
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <textarea value={description} onChange={(e) => setDescription(e.target.value)}  placeholder="Description" />
                     </label>
                     <br />
                     <label>
-                        Course:
-                        <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+                        <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} placeholder="Course" />
                     </label>
                     <br />
                     <label>
-                        Image URL:
-                        <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} />
+                        <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL"/>
                     </label>
                     <br />
                     <button type="submit">Create Menu Item</button>
@@ -196,7 +193,7 @@ const FoodMenu = ({ currentUser }) => {
 
 
       )}
-      <h2>Menu Items</h2>
+      
       <div className="menu-cards">
         {menuItems.map((menuItem) => (
           <div key={menuItem.id} className="menu-card">

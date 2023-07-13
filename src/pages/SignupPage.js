@@ -2,7 +2,7 @@ import React from 'react'
 import SignUp from '../components/SignUp'
 const SignupPage = ({ onSignup }) => {
   return (
-    <div>SignupPage
+    <div className="loginpage">
         <SignUp onSignup={onSignup} />
     </div>
   )
