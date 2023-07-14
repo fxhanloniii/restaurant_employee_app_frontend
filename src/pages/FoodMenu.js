@@ -10,6 +10,8 @@ const FoodMenu = ({ currentUser }) => {
   const [image_url, setImage_url] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
+  const [filteredMenuItems, setFilteredMenuItems] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -32,7 +34,9 @@ const FoodMenu = ({ currentUser }) => {
         });
         if (response.ok) {
           const newItem = await response.json();
-          setMenuItems([...menuItems, newItem]);
+          const updatedMenuItems = [...menuItems, newItem];
+          setMenuItems(updatedMenuItems);
+          setFilteredMenuItems(updatedMenuItems);
           setShowForm(false);
           // Reset the form fields
           setName('');
@@ -41,6 +45,7 @@ const FoodMenu = ({ currentUser }) => {
           setDescription('');
           setCourse('');
           setImage_url('');
+          fetchMenuItems();
         } else {
           console.error('Error creating menu item:', response.status);
         }
@@ -91,9 +96,11 @@ const FoodMenu = ({ currentUser }) => {
         const updatedItem = await response.json();
 
         // Update the menu items array with the edited item
-        setMenuItems((prevItems) => {
-          return prevItems.map((item) => (item.id === id ? updatedItem : item));
-        });
+        const updatedMenuItems = menuItems.map((item) =>
+        item.id === id ? updatedItem : item
+          );
+        setMenuItems(updatedMenuItems);
+        setFilteredMenuItems(updatedMenuItems);
 
         // Reset the form fields and editing state
         setEditItemId(null);
@@ -103,6 +110,7 @@ const FoodMenu = ({ currentUser }) => {
         setDescription('');
         setCourse('');
         setImage_url('');
+        fetchMenuItems();
       } else {
         console.error('Error updating menu item:', response.status);
       }
@@ -135,7 +143,9 @@ const FoodMenu = ({ currentUser }) => {
         });
         if (response.ok) {
           const data = await response.json();
-          setMenuItems(data);
+          // sorting menu items so they are listed 1st, 2nd, 3rd
+          const sortedMenuItems = data.sort((a,b) => a.course - b.course);
+          setMenuItems(sortedMenuItems);
           console.log(menuItems)
         } else {
           console.error('Error fetching menu items:', response.status);
@@ -148,6 +158,29 @@ const FoodMenu = ({ currentUser }) => {
     useEffect(() => {
         fetchMenuItems();
     }, []);
+
+    useEffect(() => {
+        // filter menu items based on the selected course
+        if (selectedCourse === '') {
+          setFilteredMenuItems(menuItems);
+        } else {
+          const filteredItems = menuItems.filter((item) => item.course === selectedCourse);
+          setFilteredMenuItems(filteredItems);
+        }
+      }, [selectedCourse, menuItems]);
+
+      const handleFilter = (course) => {
+        setSelectedCourse(course);
+        if (course === '') {
+          setFilteredMenuItems(menuItems);
+        } else {
+            setTimeout(() => {
+                const filteredItems = menuItems.filter((item) => item.course.toString() === course.toString());
+                setFilteredMenuItems(filteredItems);
+              }, 0);
+        }
+      };
+      
 
   return (
     <div className="foodMenu">
@@ -190,12 +223,15 @@ const FoodMenu = ({ currentUser }) => {
                 </form>
             )}
         </div>
-
-
       )}
-      
+      {/* Selected Course Buttons */}
+      <div className="courseButtons">
+        <button onClick={() => handleFilter(1)}>1st</button>
+        <button onClick={() => handleFilter(2)}>2nd</button>
+        <button onClick={() => handleFilter(3)}>3rd</button>
+      </div>
       <div className="menu-cards">
-        {menuItems.map((menuItem) => (
+         {filteredMenuItems.map((menuItem) => (
           <div key={menuItem.id} className="menu-card">
             <div className="item-image">
               {editItemId === menuItem.id ? (
@@ -242,8 +278,10 @@ const FoodMenu = ({ currentUser }) => {
                     </div>
                   )}
             </div>
+            
           </div>
         ))}
+        
       </div>
     </div>
   );
