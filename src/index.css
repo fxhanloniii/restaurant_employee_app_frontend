@@ -204,3 +204,61 @@ body, html {
   justify-content: center;
   text-align: center;
 }
+
+/* Wines */
+
+.wines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wine-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wine-card {
+  width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+.wine-image {
+  position: relative;
+}
+
+.wine-image form {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.wine-image img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.wine-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.wine-info {
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 0 5px;
+}
