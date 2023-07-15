@@ -144,8 +144,10 @@ body, html {
 
 .dashboard {
   width: 350px;
-  height: 350px;
-  /* border: 1px solid black; */
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   margin: 20px 0;
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -169,7 +171,7 @@ body, html {
   align-items: center;
   text-align: center;
   border-radius: 20px;
-  margin: 5px;
+  margin: 10px 5px;
   text-decoration: none;
   color: white;
   font-weight: bold;
@@ -206,6 +208,10 @@ body, html {
   border-radius: 10px;
   font-size: 24px;
   font-weight: bold;
+}
+
+.dashboard-header h1 {
+  font-size: 20px;
 }
 
 /* Footer */
@@ -450,3 +456,140 @@ button {
 .loginsignup .signupbutton {
   margin-top: 10px;
 }
+
+/* NavBar DropDown */
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  display: none;
+  z-index: 1;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-link {
+  margin: 5px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-button {
+  display: block;
+  position: absolute;
+  /* top: 0; */
+  right: 0; 
+  padding: 1px 5px 4px 5px;
+  margin-top: 15px;
+  margin-right: 10px;
+  background-color: rgb(196, 196, 196);
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  align-items: center; 
+  justify-content: center;
+}
+
+@media screen and (min-width: 769px) {
+  .header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .navbar-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .dropdown-menu {
+    display: none;
+  }
+}
+
+  .dropdown-button {
+    display: none;
+  }
+
+@media screen and (max-width: 768px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .navbar {
+    display: none;
+  }
+  
+  .dropdown-button {
+    display: block;
+  }
+  
+  .dropdown-menu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .dropdown-link {
+    margin: 5px;
+    text-decoration: none;
+    color: black;
+  }
+}
+
+/* dynamically set className buttons */
+
+.c1, .c2, .c3 {
+  background-color: forestgreen;
+  color: white
+}
+
+.ingredients {
+  background-color: salmon;
+  color: white;
+}
+
+.allergies {
+  background-color:goldenrod;
+  color: white;
+}
+/* .c2 {
+  background-color:salmon;
+  color: white;
+}
+
+.c3 {
+  background-color: gold;
+  color: white;
+} */

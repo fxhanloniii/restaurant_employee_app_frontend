@@ -12,13 +12,13 @@ const Home = ({ currentUser }) => {
         <img src="images/image1.jpg" alt="restaurant photo" className="heroImage" />
       </div>
       <div className="dashboard">
-        <div>
+        {/* <div className="dashboard-header">
           {currentUser ? (
            <h1>Welcome {currentUser && currentUser.username}</h1>
           ) : (
             <h1>Dashboard</h1>
             )}
-        </div>
+        </div> */}
         <div className="dashboard-sections">
           <Link className="dashboard-section dashboard-dinner" to='/foodmenu'>
             <h1>Dinner</h1>

@@ -12,6 +12,12 @@ const FoodMenu = ({ currentUser }) => {
   const [editItemId, setEditItemId] = useState(null);
   const [filteredMenuItems, setFilteredMenuItems] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedInfo, setSelectedInfo] = useState('Ingredients');
+
+  // Info Selection Function
+  const handleInfoClick = (info) => {
+    setSelectedInfo(info);
+  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -267,10 +273,16 @@ const FoodMenu = ({ currentUser }) => {
               )}
             </div>
             <div className="item-info">
-              <p>Ingredients: {menuItem.ingredients}</p>
-              <p>Allergies: {menuItem.allergies}</p>
-              <p>Description: {menuItem.description}</p>
-              <p>Course: {menuItem.course}</p>
+                <div>
+                    <button className="ingredients" onClick={() => handleInfoClick('Ingredients')}>Ingredients</button>
+                    <button className="allergies" onClick={() => handleInfoClick('Allergies')}>Allergies</button>
+                    <button className={`c${menuItem.course}`}>C{menuItem.course}</button>
+                </div>
+                <div>
+                {selectedInfo === 'Ingredients' && <p>{menuItem.ingredients}</p>}
+                {selectedInfo === 'Allergies' && <p>{menuItem.allergies}</p>}
+                </div>
+              {/* <p>Description: {menuItem.description}</p> */}
               {currentUser && currentUser.group === 'Manager' && (
                     <div>
                       <button onClick={() => handleEdit(menuItem.id)}>Edit</button>
