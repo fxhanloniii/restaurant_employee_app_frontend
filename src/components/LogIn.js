@@ -15,7 +15,7 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div>
+    <div className="loginsignup">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -23,14 +23,16 @@ const Login = ({ onLogin }) => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Login</button>
+        <button type="submit" className="loginbutton">Log In</button>
       </form>
     </div>
   );

@@ -194,29 +194,29 @@ const FoodMenu = ({ currentUser }) => {
             <button onClick={() => setShowForm(true)}>Add Menu Item</button>
           )}
             {showForm && (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="form">
                     <label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} placeholder="Ingredients" />
+                        <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} placeholder="Ingredients" required />
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} placeholder="Allergies"/>
+                        <input type="text" value={allergies} onChange={(e) => setAllergies(e.target.value)} placeholder="Allergies" required />
                     </label>
                     <br />
                     <label>
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)}  placeholder="Description" />
+                        <textarea value={description} onChange={(e) => setDescription(e.target.value)}  placeholder="Description" required />
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} placeholder="Course" />
+                        <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} placeholder="Course" required />
                     </label>
                     <br />
                     <label>
-                        <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL"/>
+                        <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL" required />
                     </label>
                     <br />
                     <button type="submit">Create Menu Item</button>

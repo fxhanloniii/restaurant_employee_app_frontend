@@ -120,7 +120,7 @@ const Wines = ({ currentUser }) => {
   return (
     <div className="wines">
       <div className="dinnerImageHero">
-        <img src="/images/image3.jpg" alt="table with a view" className="heroImage" />
+        <img src="/images/wine.jpg" alt="table with a view" className="heroImage" />
         <h1 className="dinnerText">Wines</h1>
       </div>
       {currentUser && currentUser.group === 'Manager' && (
@@ -128,58 +128,68 @@ const Wines = ({ currentUser }) => {
           {!showForm ? (
             <button onClick={() => setShowForm(true)}>Add Wine</button>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="form">
               <label>
-                Name:
+                
                 <input
                   type="text"
                   value={name}
                   onChange={(e) =>
                     setWineData((prevData) => ({ ...prevData, name: e.target.value }))
                   }
+                  placeholder="Name"
+                  required
                 />
               </label>
               <br />
               <label>
-                Description:
+                
                 <textarea
                   value={description}
                   onChange={(e) =>
                     setWineData((prevData) => ({ ...prevData, description: e.target.value }))
                   }
+                  placeholder="Description"
+                  required
                 />
               </label>
               <br />
               <label>
-                Region:
+                
                 <input
                   type="text"
                   value={region}
                   onChange={(e) =>
                     setWineData((prevData) => ({ ...prevData, region: e.target.value }))
                   }
+                  placeholder="Region"
+                  required
                 />
               </label>
               <br />
               <label>
-                Year:
+                
                 <input
                   type="text"
                   value={year}
                   onChange={(e) =>
                     setWineData((prevData) => ({ ...prevData, year: e.target.value }))
                   }
+                  placeholder="Year"
+                  required
                 />
               </label>
               <br />
               <label>
-                Image URL:
+                
                 <input
                   type="text"
                   value={image_url}
                   onChange={(e) =>
                     setWineData((prevData) => ({ ...prevData, image_url: e.target.value }))
                   }
+                  placeholder="Image URL"
+                  required
                 />
               </label>
               <br />

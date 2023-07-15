@@ -9,7 +9,7 @@ import Wine from '../pages/Wine';
 const Main = ({ onLogin, onSignup, currentUser }) => {
   return (
     <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home currentUser={currentUser}/>} />
         <Route path='/login' element={<LoginPage onLogin={onLogin}/>} />
         <Route path='/signup' element={<SignupPage onSignup={onSignup}/>} />
         <Route path='/foodmenu' element={<FoodMenu currentUser={currentUser} />} />

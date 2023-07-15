@@ -7,7 +7,7 @@ const LoginPage = ({ onLogin }) => {
         <LogIn onLogin={onLogin} />
 
         <p>No Account? Sign Up Here</p>
-        <Link className="navbar-link" to='/signup'>Sign Up</Link>
+        <Link className="navbar-link signupbutton" to='/signup'>Sign Up</Link>
     </div>
   )
 }

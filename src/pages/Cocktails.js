@@ -129,35 +129,37 @@ const Cocktails = ({ currentUser }) => {
             <button onClick={() => setShowForm(true)}>Add Cocktail</button>
           )}
           {showForm && (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="form">
               <label>
-                Name:
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+               
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
               </label>
               <br />
               <label>
-                Ingredients:
+                
                 <input
                   type="text"
                   value={ingredients}
                   onChange={(e) => setIngredients(e.target.value)}
+                  placeholder="Ingredients"
                 />
               </label>
               <br />
               <label>
-                Description:
+                
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
                 />
               </label>
               <br />
               <label>
-                Image URL:
                 <input
                   type="text"
                   value={image_url}
                   onChange={(e) => setImage_url(e.target.value)}
+                  placeholder="Image URL"
                 />
               </label>
               <br />

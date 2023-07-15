@@ -12,7 +12,7 @@ const SignUp = ({ onSignup }) => {
   };
 
   return (
-    <div>
+    <div className="loginsignup">
       <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -20,14 +20,16 @@ const SignUp = ({ onSignup }) => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Signup</button>
+        <button type="submit" className="signupbutton">Sign Up</button>
       </form>
     </div>
   );
