@@ -125,3 +125,7 @@ function App() {
 }
 
 export default App;
+
+
+// https://github.com/fortana-co/react-dropzone-uploader
+// https://react-dropzone-uploader.js.org/docs/quick-start
