@@ -129,3 +129,4 @@ export default App;
 
 // https://github.com/fortana-co/react-dropzone-uploader
 // https://react-dropzone-uploader.js.org/docs/quick-start
+// https://www.geeksforgeeks.org/python-uploading-images-in-django/

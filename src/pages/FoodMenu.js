@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Dropzone from 'react-dropzone-uploader';
+import 'react-dropzone-uploader/dist/styles.css';
 
 const FoodMenu = ({ currentUser }) => {
   const [menuItems, setMenuItems] = useState([]);
@@ -13,15 +15,18 @@ const FoodMenu = ({ currentUser }) => {
   const [filteredMenuItems, setFilteredMenuItems] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedInfo, setSelectedInfo] = useState('Ingredients');
-
+  const [image_file, setImage_file] = useState(null);
+  // 
   // Info Selection Function
   const handleInfoClick = (info) => {
     setSelectedInfo(info);
   };
 
-  // Function to handle form submission
+//   Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const 
     const createMenuItem = async () => {
       try {
         const response = await fetch('http://localhost:8000/menu-items/', {
@@ -62,6 +67,8 @@ const FoodMenu = ({ currentUser }) => {
 
     createMenuItem();
   };
+
+
 
   const handleEdit = (id) => {
     // Set the editing state for the item with the provided id
@@ -152,7 +159,7 @@ const FoodMenu = ({ currentUser }) => {
           // sorting menu items so they are listed 1st, 2nd, 3rd
           const sortedMenuItems = data.sort((a,b) => a.course - b.course);
           setMenuItems(sortedMenuItems);
-          console.log(menuItems)
+          console.log(sortedMenuItems)
         } else {
           console.error('Error fetching menu items:', response.status);
         }
@@ -184,6 +191,21 @@ const FoodMenu = ({ currentUser }) => {
                 const filteredItems = menuItems.filter((item) => item.course.toString() === course.toString());
                 setFilteredMenuItems(filteredItems);
               }, 0);
+        }
+      };
+
+      const getUploadParams = ({ meta }) => {
+        return {
+          url: 'http://localhost:8000/menu-items/',
+          headers: {
+            Authorization: `Token ${localStorage.getItem('token')}`,
+          },
+        };
+      };
+
+      const handleChangeStatus = ({ meta, file }, status) => {
+        if (status === 'done') {
+          setImage_file(file);
         }
       };
       
@@ -221,9 +243,20 @@ const FoodMenu = ({ currentUser }) => {
                         <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} placeholder="Course" required />
                     </label>
                     <br />
-                    <label>
+                    {/* <label>
                         <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL" required />
-                    </label>
+                    </label> */}
+                    {/* <Dropzone
+                      getUploadParams={getUploadParams}
+                      onChangeStatus={handleChangeStatus}
+                      accept="image/*"
+                    /> */}
+                    <Dropzone
+                        getUploadParams={getUploadParams}
+                        onChangeStatus={handleChangeStatus}
+                        onSubmit={handleSubmit}
+                        accept="image/*"
+                        />
                     <br />
                     <button type="submit">Create Menu Item</button>
                 </form>
