@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone-uploader';
 import 'react-dropzone-uploader/dist/styles.css';
 
+
 const FoodMenu = ({ currentUser }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [name, setName] = useState('');
@@ -16,58 +17,92 @@ const FoodMenu = ({ currentUser }) => {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedInfo, setSelectedInfo] = useState('Ingredients');
   const [image_file, setImage_file] = useState(null);
-  // 
+  
   // Info Selection Function
   const handleInfoClick = (info) => {
     setSelectedInfo(info);
   };
 
-//   Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const 
-    const createMenuItem = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/menu-items/', {
+  const uploadToCloudinaryAndGetUrl = async () => {
+    if (!image_file) {
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file', image_file);
+    formData.append('upload_preset', 'ml_default');
+    console.log(formData)
+  
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dph0opk9j/upload',
+        {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            ingredients,
-            allergies,
-            description,
-            course,
-            image_url,
-          }),
-        });
-        if (response.ok) {
-          const newItem = await response.json();
-          const updatedMenuItems = [...menuItems, newItem];
-          setMenuItems(updatedMenuItems);
-          setFilteredMenuItems(updatedMenuItems);
-          setShowForm(false);
-          // Reset the form fields
-          setName('');
-          setIngredients('');
-          setAllergies('');
-          setDescription('');
-          setCourse('');
-          setImage_url('');
-          fetchMenuItems();
-        } else {
-          console.error('Error creating menu item:', response.status);
+          body: formData,
         }
-      } catch (error) {
-        console.error('Error creating menu item:', error);
-      }
-    };
+      );
+      const data = await response.json();
+      console.log("Data from Cloudinary: ", data);
+      return data.url;
+      console.log(data.url)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+//   uploadToCloudinaryAndGetUrl().then((imageUrl) => {
+//     createMenuItem(imageUrl);
+//   });
 
-    createMenuItem();
+  // const 
+  const createMenuItem = async (imageUrl) => {
+    console.log("Image URL in createMenuItem: ", imageUrl);
+    try {
+      const response = await fetch('http://localhost:8000/menu-items/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          ingredients,
+          allergies,
+          description,
+          course,
+          image_url: imageUrl,
+        }),
+      });
+      if (response.ok) {
+        const newItem = await response.json();
+        const updatedMenuItems = [...menuItems, newItem];
+        setMenuItems(updatedMenuItems);
+        setFilteredMenuItems(updatedMenuItems);
+        setShowForm(false);
+        // Reset the form fields
+        setName('');
+        setIngredients('');
+        setAllergies('');
+        setDescription('');
+        setCourse('');
+        setImage_url('');
+        fetchMenuItems();
+      } else {
+        console.error('Error creating menu item:', response.status);
+      }
+    } catch (error) {
+      console.error('Error creating menu item:', error);
+    }
   };
 
+//   Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const imageUrl = await uploadToCloudinaryAndGetUrl();
+    createMenuItem(imageUrl);
+  };
+    
+
+   
 
 
   const handleEdit = (id) => {
@@ -194,14 +229,14 @@ const FoodMenu = ({ currentUser }) => {
         }
       };
 
-      const getUploadParams = ({ meta }) => {
-        return {
-          url: 'http://localhost:8000/menu-items/',
-          headers: {
-            Authorization: `Token ${localStorage.getItem('token')}`,
-          },
-        };
-      };
+    //   const getUploadParams = ({ meta }) => {
+    //     return {
+    //       url: 'http://localhost:8000/menu-items/',
+    //       headers: {
+    //         Authorization: `Token ${localStorage.getItem('token')}`,
+    //       },
+    //     };
+    //   };
 
       const handleChangeStatus = ({ meta, file }, status) => {
         if (status === 'done') {
@@ -209,6 +244,7 @@ const FoodMenu = ({ currentUser }) => {
         }
       };
       
+      const NoSubmitButton = () => null;
 
   return (
     <div className="foodMenu">
@@ -252,7 +288,7 @@ const FoodMenu = ({ currentUser }) => {
                       accept="image/*"
                     /> */}
                     <Dropzone
-                        getUploadParams={getUploadParams}
+                        SubmitButtonComponent={NoSubmitButton}
                         onChangeStatus={handleChangeStatus}
                         onSubmit={handleSubmit}
                         accept="image/*"
@@ -291,11 +327,11 @@ const FoodMenu = ({ currentUser }) => {
                     onChange={(e) => setDescription(e.target.value)}
                   />
                   <input type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
-                  <input
+                  {/* <input
                     type="text"
                     value={image_url}
                     onChange={(e) => setImage_url(e.target.value)}
-                  />
+                  /> */}
                   <button type="submit">Save</button>
                 </form>
               ) : (
