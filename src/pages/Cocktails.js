@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Dropzone from 'react-dropzone-uploader';
+import 'react-dropzone-uploader/dist/styles.css';
 
 const Cocktails = ({ currentUser }) => {
   const [cocktails, setCocktails] = useState([]);
@@ -8,40 +10,77 @@ const Cocktails = ({ currentUser }) => {
   const [image_url, setImage_url] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editCocktailId, setEditCocktailId] = useState(null);
+  const [image_file, setImage_file] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const createCocktail = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/cocktails/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            ingredients,
-            description,
-            image_url,
-          }),
-        });
-        if (response.ok) {
-          const newCocktail = await response.json();
-          setCocktails([...cocktails, newCocktail]);
-          setShowForm(false);
-          setName('');
-          setIngredients('');
-          setDescription('');
-          setImage_url('');
-        } else {
-          console.error('Error creating cocktail:', response.status);
-        }
-      } catch (error) {
-        console.error('Error creating cocktail:', error);
-      }
-    };
+    const imageUrl = await uploadToCloudinaryAndGetUrl();
+    createCocktail(imageUrl);
+  };
+  
+  const handleChangeStatus = ({ meta, file }, status) => {
+    if (status === 'done') {
+      setImage_file(file);
+    }
+  };
+  
+  const NoSubmitButton = () => null;
 
-    createCocktail();
+  const uploadToCloudinaryAndGetUrl = async () => {
+    if (!image_file) {
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file', image_file);
+    formData.append('upload_preset', 'ml_default');
+    console.log(formData)
+  
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dph0opk9j/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log("Data from Cloudinary: ", data);
+      return data.url;
+      console.log(data.url)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createCocktail = async (imageUrl) => {
+    try {
+      const response = await fetch('http://localhost:8000/cocktails/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          ingredients,
+          description,
+          image_url: imageUrl,
+        }),
+      });
+      if (response.ok) {
+        const newCocktail = await response.json();
+        setCocktails([...cocktails, newCocktail]);
+        setShowForm(false);
+        setName('');
+        setIngredients('');
+        setDescription('');
+        setImage_url('');
+      } else {
+        console.error('Error creating cocktail:', response.status);
+      }
+    } catch (error) {
+      console.error('Error creating cocktail:', error);
+    }
   };
 
   const handleEdit = (id) => {
@@ -154,14 +193,20 @@ const Cocktails = ({ currentUser }) => {
                 />
               </label>
               <br />
-              <label>
+              {/* <label>
                 <input
                   type="text"
                   value={image_url}
                   onChange={(e) => setImage_url(e.target.value)}
                   placeholder="Image URL"
                 />
-              </label>
+              </label> */}
+              <Dropzone
+                        SubmitButtonComponent={NoSubmitButton}
+                        onChangeStatus={handleChangeStatus}
+                        onSubmit={handleSubmit}
+                        accept="image/*"
+                        />
               <br />
               <button type="submit">Create Cocktail</button>
             </form>

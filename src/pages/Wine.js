@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Dropzone from 'react-dropzone-uploader';
+import 'react-dropzone-uploader/dist/styles.css';
 
 const Wines = ({ currentUser }) => {
   const [wines, setWines] = useState([]);
@@ -11,19 +13,66 @@ const Wines = ({ currentUser }) => {
   });
   const [showForm, setShowForm] = useState(false);
   const [editWineId, setEditWineId] = useState(null);
+  const [image_file, setImage_file] = useState(null);
 
   const { name, description, region, year, image_url } = wineData;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const imageUrl = await uploadToCloudinaryAndGetUrl();
+    createWine(imageUrl);
+  };
 
+  const handleChangeStatus = ({ meta, file }, status) => {
+    if (status === 'done') {
+      setImage_file(file);
+    }
+  };
+
+  const NoSubmitButton = () => null;
+
+  const uploadToCloudinaryAndGetUrl = async () => {
+    if (!image_file) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', image_file);
+    formData.append('upload_preset', 'ml_default');
+    console.log(formData)
+  
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dph0opk9j/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log("Data from Cloudinary: ", data);
+      return data.url;
+      console.log(data.url)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const createWine = async (imageUrl) => {
     try {
       const response = await fetch('http://localhost:8000/wines/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(wineData),
+        body: JSON.stringify({
+            name,
+            description,
+            region,
+            year,
+            image_url: imageUrl,
+        }),
       });
 
       if (response.ok) {
@@ -36,7 +85,7 @@ const Wines = ({ currentUser }) => {
     } catch (error) {
       console.error('Error creating wine:', error);
     }
-  };
+};
 
   const handleEdit = (id) => {
     setEditWineId(id);
@@ -180,7 +229,7 @@ const Wines = ({ currentUser }) => {
                 />
               </label>
               <br />
-              <label>
+              {/* <label>
                 
                 <input
                   type="text"
@@ -191,7 +240,13 @@ const Wines = ({ currentUser }) => {
                   placeholder="Image URL"
                   required
                 />
-              </label>
+              </label> */}
+              <Dropzone
+                        SubmitButtonComponent={NoSubmitButton}
+                        onChangeStatus={handleChangeStatus}
+                        onSubmit={handleSubmit}
+                        accept="image/*"
+                        />
               <br />
               <button type="submit">Create Wine</button>
             </form>
