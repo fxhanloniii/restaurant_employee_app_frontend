@@ -13,7 +13,79 @@ const Home = ({ currentUser }) => {
     fetchOutOfStockItems();
   },[]);
 
-  
+  const fetchMessages = async () => {
+    const response = await fetch('http://localhost:8000/messages/');
+    const data = await response.json();
+    setMessages(data);
+  }
+
+  const fetchOutOfStockItems = async () => {
+    const response = await fetch('http://localhost:8000/out-of-stock-items/');
+    const data = await response.json();
+    setOutOfStockItems(data);
+  };
+
+  const handlePostMessage = async () => {
+    const response = await fetch('http://localhost:8000/messages/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ 
+        content: newMessage,
+        username: currentUser.username 
+       }),
+    });
+    if (response.ok) {
+      fetchMessages();
+      setNewMessage('');
+    }
+  };
+
+  const handlePostOutOfStockItem = async () => {
+    const response = await fetch('http://localhost:8000/out-of-stock-items/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ 
+        name: newItemName,
+        username: currentUser.username 
+       }),
+    });
+    if (response.ok) {
+      fetchOutOfStockItems();
+      setNewItemName('');
+    }
+  };
+
+  const deleteMessage = async (id) => {
+    const response = await fetch(`http://localhost:8000/messages/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Token ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      fetchMessages();
+    }
+  };
+
+  const deleteOutOfStockItem = async (id) => {
+    const response = await fetch(`http://localhost:8000/out-of-stock-items/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Token ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      fetchOutOfStockItems();
+    }
+  };
     
   return (
     <div className="homepage">
@@ -41,6 +113,44 @@ const Home = ({ currentUser }) => {
             </Link>
           </div>
         </div>
+        <div className="message-board">
+        <h2>Message Board</h2>
+        {currentUser && currentUser.group === 'Manager' && (
+          <div className="inputbutton">
+            <textarea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Write a message..." />
+            <button onClick={handlePostMessage}>Post Message</button>
+          </div>
+        )}
+        <div className="messageBox">
+          {messages.map((message) => (
+            <div className="message" key={message.id}>
+              <p>{message.content}</p>
+              {currentUser && currentUser.group === 'Manager' && (
+                <button onClick={() => deleteMessage(message.id)}>Delete</button>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="out-of-stock">
+        <h2>Bar 86 List</h2>
+        {currentUser && currentUser.group === 'Manager' && (
+          <div className="inputbutton">
+            <input type="text" value={newItemName} onChange={(e) => setNewItemName(e.target.value)} placeholder="Out of stock item" />
+            <button onClick={handlePostOutOfStockItem}>Post Item</button>
+          </div>
+        )}
+        <div className="messageBox">
+          {outOfStockItems.map((item) => (
+            <div className="message" key={item.id}>
+              <p>{item.name}</p>
+              {currentUser && currentUser.group === 'Manager' && (
+                <button onClick={() => deleteOutOfStockItem(item.id)}>Delete</button>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
       </div>
     </div>
   )

@@ -584,12 +584,36 @@ button {
   background-color:goldenrod;
   color: white;
 }
-/* .c2 {
-  background-color:salmon;
-  color: white;
+
+
+/* Message Board & 86 List */
+
+.message-board, .out-of-stock {
+  width: 350px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 20px 0;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: rgb(219, 219, 219);
 }
 
-.c3 {
-  background-color: gold;
-  color: white;
-} */
+.inputbutton {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.messageBox {
+  background-color: white;
+  margin: 10px;
+  height: 100px;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+.message {
+  display: flex;
+}
