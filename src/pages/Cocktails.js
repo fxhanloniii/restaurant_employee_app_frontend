@@ -245,8 +245,9 @@ const Cocktails = ({ currentUser }) => {
               )}
             </div>
             <div className="cocktail-info">
-              <p>Ingredients: {cocktail.ingredients}</p>
-              <p>Description: {cocktail.description}</p>
+              <button className="ingredients">Ingredients</button>
+              <p>{cocktail.ingredients}</p>
+              {/* <p>Description: {cocktail.description}</p> */}
               {currentUser && currentUser.group === 'Manager' && (
                 <div>
                   <button onClick={() => handleEdit(cocktail.id)}>Edit</button>
