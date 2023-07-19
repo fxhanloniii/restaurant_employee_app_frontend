@@ -118,15 +118,15 @@ const Home = ({ currentUser }) => {
         {currentUser && currentUser.group === 'Manager' && (
           <div className="inputbutton">
             <textarea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Write a message..." />
-            <button onClick={handlePostMessage}>Post Message</button>
+            <button className="loginbutton" onClick={handlePostMessage}>Post Message</button>
           </div>
         )}
         <div className="messageBox">
           {messages.map((message) => (
             <div className="message" key={message.id}>
-              <p>{message.content}</p>
+              <p>{message.content}:{message.username}</p>
               {currentUser && currentUser.group === 'Manager' && (
-                <button onClick={() => deleteMessage(message.id)}>Delete</button>
+                <button className="delete" onClick={() => deleteMessage(message.id)}>X</button>
               )}
             </div>
           ))}
@@ -137,7 +137,7 @@ const Home = ({ currentUser }) => {
         {currentUser && currentUser.group === 'Manager' && (
           <div className="inputbutton">
             <input type="text" value={newItemName} onChange={(e) => setNewItemName(e.target.value)} placeholder="Out of stock item" />
-            <button onClick={handlePostOutOfStockItem}>Post Item</button>
+            <button className="loginbutton" onClick={handlePostOutOfStockItem}>Post Item</button>
           </div>
         )}
         <div className="messageBox">
@@ -145,7 +145,7 @@ const Home = ({ currentUser }) => {
             <div className="message" key={item.id}>
               <p>{item.name}</p>
               {currentUser && currentUser.group === 'Manager' && (
-                <button onClick={() => deleteOutOfStockItem(item.id)}>Delete</button>
+                <button className="delete" onClick={() => deleteOutOfStockItem(item.id)}>X</button>
               )}
             </div>
           ))}

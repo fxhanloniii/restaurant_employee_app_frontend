@@ -616,4 +616,16 @@ button {
 
 .message {
   display: flex;
+  align-items: center;
+  margin: 1px 5px;
+}
+
+.delete {
+  background-color: red;
+  color: white;
+  height: 25px;
+  width: 25px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
