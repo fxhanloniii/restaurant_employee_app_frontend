@@ -327,7 +327,7 @@ const Wines = ({ currentUser }) => {
                 <div className="winebuttons">
                     <button className="ingredients">Description</button>
                     <button className="allergies" >{wine.region}</button>
-                    <button className={`c${menuItem.course}`}>{wine.year}</button>
+                    <button className={`c1`}>{wine.year}</button>
                 </div>
                 <p>Description: {wine.description}</p>
               {currentUser && currentUser.group === 'Manager' && (
