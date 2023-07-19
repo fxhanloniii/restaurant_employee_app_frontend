@@ -114,7 +114,7 @@ const Home = ({ currentUser }) => {
           </div>
         </div>
         <div className="message-board">
-        <h2>Message Board</h2>
+        <h2 className="messageBoard">Message Board</h2>
         {currentUser && currentUser.group === 'Manager' && (
           <div className="inputbutton">
             <textarea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Write a message..." />
@@ -133,7 +133,7 @@ const Home = ({ currentUser }) => {
         </div>
       </div>
       <div className="out-of-stock">
-        <h2>Bar 86 List</h2>
+        <h2 className="bar86">Bar 86 List</h2>
         {currentUser && currentUser.group === 'Manager' && (
           <div className="inputbutton">
             <input type="text" value={newItemName} onChange={(e) => setNewItemName(e.target.value)} placeholder="Out of stock item" />
