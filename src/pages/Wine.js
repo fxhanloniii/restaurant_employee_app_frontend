@@ -329,7 +329,7 @@ const Wines = ({ currentUser }) => {
                     <button className="allergies" >{wine.region}</button>
                     <button className={`c1`}>{wine.year}</button>
                 </div>
-                <p>Description: {wine.description}</p>
+                <p>{wine.description}</p>
               {currentUser && currentUser.group === 'Manager' && (
                 <div>
                   <button onClick={() => handleEdit(wine.id)}>Edit</button>
