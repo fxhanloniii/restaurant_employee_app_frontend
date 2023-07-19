@@ -31,7 +31,7 @@ const FoodMenu = ({ currentUser }) => {
     const formData = new FormData();
     formData.append('file', image_file);
     formData.append('upload_preset', 'ml_default');
-    console.log(formData)
+    
   
     try {
       const response = await fetch(
@@ -42,9 +42,9 @@ const FoodMenu = ({ currentUser }) => {
         }
       );
       const data = await response.json();
-      console.log("Data from Cloudinary: ", data);
+     
       return data.url;
-      console.log(data.url)
+      
     } catch (error) {
       console.error(error);
     }
@@ -56,9 +56,9 @@ const FoodMenu = ({ currentUser }) => {
 
   // const 
   const createMenuItem = async (imageUrl) => {
-    console.log("Image URL in createMenuItem: ", imageUrl);
+    
     try {
-      const response = await fetch('http://localhost:8000/menu-items/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/menu-items/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const FoodMenu = ({ currentUser }) => {
     const itemToEdit = menuItems.find((item) => item.id === id);
 
     try {
-      const response = await fetch(`http://localhost:8000/menu-items/${id}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/menu-items/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -168,9 +168,9 @@ const FoodMenu = ({ currentUser }) => {
   };
 
   const handleDelete = async (id) => {
-    console.log(id)
+    
     try {
-      await fetch(`http://localhost:8000/menu-items/${id}/`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/menu-items/${id}/`, {
         method: 'DELETE',
       });
       fetchMenuItems();
@@ -184,7 +184,7 @@ const FoodMenu = ({ currentUser }) => {
     const fetchMenuItems = async () => {
         const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://localhost:8000/menu-items/', {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/menu-items/`, {
             // headers: {
             //     Authorization: `Token ${token}`,
             // },
@@ -194,7 +194,7 @@ const FoodMenu = ({ currentUser }) => {
           // sorting menu items so they are listed 1st, 2nd, 3rd
           const sortedMenuItems = data.sort((a,b) => a.course - b.course);
           setMenuItems(sortedMenuItems);
-          console.log(sortedMenuItems)
+          
         } else {
           console.error('Error fetching menu items:', response.status);
         }

@@ -14,19 +14,19 @@ const Home = ({ currentUser }) => {
   },[]);
 
   const fetchMessages = async () => {
-    const response = await fetch('http://localhost:8000/messages/');
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/messages/`);
     const data = await response.json();
     setMessages(data);
   }
 
   const fetchOutOfStockItems = async () => {
-    const response = await fetch('http://localhost:8000/out-of-stock-items/');
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/out-of-stock-items/`);
     const data = await response.json();
     setOutOfStockItems(data);
   };
 
   const handlePostMessage = async () => {
-    const response = await fetch('http://localhost:8000/messages/', {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/messages/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Home = ({ currentUser }) => {
   };
 
   const handlePostOutOfStockItem = async () => {
-    const response = await fetch('http://localhost:8000/out-of-stock-items/', {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/out-of-stock-items/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Home = ({ currentUser }) => {
   };
 
   const deleteMessage = async (id) => {
-    const response = await fetch(`http://localhost:8000/messages/${id}/`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/messages/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const Home = ({ currentUser }) => {
   };
 
   const deleteOutOfStockItem = async (id) => {
-    const response = await fetch(`http://localhost:8000/out-of-stock-items/${id}/`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/out-of-stock-items/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

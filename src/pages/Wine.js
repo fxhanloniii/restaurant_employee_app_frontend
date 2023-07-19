@@ -61,7 +61,7 @@ const Wines = ({ currentUser }) => {
 
   const createWine = async (imageUrl) => {
     try {
-      const response = await fetch('http://localhost:8000/wines/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/wines/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const Wines = ({ currentUser }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8000/wines/${id}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/wines/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const Wines = ({ currentUser }) => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:8000/wines/${id}/`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/wines/${id}/`, {
         method: 'DELETE',
       });
       fetchWines();
@@ -139,7 +139,7 @@ const Wines = ({ currentUser }) => {
 
   const fetchWines = async () => {
     try {
-      const response = await fetch('http://localhost:8000/wines/');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/wines/`);
       if (response.ok) {
         const data = await response.json();
         setWines(data);

@@ -34,7 +34,7 @@ const Cocktails = ({ currentUser }) => {
     const formData = new FormData();
     formData.append('file', image_file);
     formData.append('upload_preset', 'ml_default');
-    console.log(formData)
+    
   
     try {
       const response = await fetch(
@@ -45,9 +45,9 @@ const Cocktails = ({ currentUser }) => {
         }
       );
       const data = await response.json();
-      console.log("Data from Cloudinary: ", data);
+      
       return data.url;
-      console.log(data.url)
+      
     } catch (error) {
       console.error(error);
     }
@@ -55,7 +55,7 @@ const Cocktails = ({ currentUser }) => {
 
   const createCocktail = async (imageUrl) => {
     try {
-      const response = await fetch('http://localhost:8000/cocktails/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cocktails/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const Cocktails = ({ currentUser }) => {
     const cocktailToEdit = cocktails.find((cocktail) => cocktail.id === id);
 
     try {
-      const response = await fetch(`http://localhost:8000/cocktails/${id}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cocktails/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ const Cocktails = ({ currentUser }) => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:8000/cocktails/${id}/`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/cocktails/${id}/`, {
         method: 'DELETE',
       });
       fetchCocktails();
@@ -140,7 +140,7 @@ const Cocktails = ({ currentUser }) => {
 
   const fetchCocktails = async () => {
     try {
-      const response = await fetch('http://localhost:8000/cocktails/');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/cocktails/`);
       if (response.ok) {
         const data = await response.json();
         setCocktails(data);

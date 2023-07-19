@@ -16,16 +16,16 @@ function App() {
 
   const fetchUserInfo = async (token) => {
     try {
-      console.log(token)
+      
       // API call to fetch user info
-      const response = await fetch('http://localhost:8000/api/user/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/`, {
         headers: {
           Authorization: `Token ${token}`,
           'Content-Type': 'application/json',
         },
       });
       const data = await response.json();
-      console.log(data)
+      
       setCurrentUser({ username: data.username, group: data.group });
     } catch (error) {
       console.error('Error:', error);
@@ -36,7 +36,7 @@ function App() {
   const handleLogin = async (username, password) => {
     try {
       // Perform login API call
-      const response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function App() {
         // Login successful
         localStorage.setItem('token', data.token);
         setCurrentUser({ username, group: data.group });
-        console.log(currentUser);
+        
       } else {
         // Login failed
         console.log('Login failed:', data.error);
@@ -67,7 +67,7 @@ function App() {
   const handleSignup = async (username, password) => {
     try {
       // Perform signup API call
-      const response = await fetch('http://localhost:8000/api/signup/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/signup/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ function App() {
         setCurrentUser({ username });
       } else {
         // Signup failed
-        console.log('Signup failed:', data.error);
+        console.error('Signup failed:', data.error);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -95,7 +95,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/logout/', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/logout/`, {
         method: 'GET', 
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ function App() {
         setCurrentUser(null);
       } else {
         // Logout failed
-        console.log('Logout failed');
+        console.error('Logout failed');
       }
     } catch (error) {
       console.error('Error:', error);
