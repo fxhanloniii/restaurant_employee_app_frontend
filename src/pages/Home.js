@@ -124,7 +124,7 @@ const Home = ({ currentUser }) => {
         <div className="messageBox">
           {messages.map((message) => (
             <div className="message" key={message.id}>
-              <p>{message.content}:{message.username}</p>
+              <p>{message.content}-{message.username}</p>
               {currentUser && currentUser.group === 'Manager' && (
                 <button className="delete" onClick={() => deleteMessage(message.id)}>X</button>
               )}
