@@ -629,3 +629,8 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+.winebuttons {
+  display: flex;
+  flex-wrap: wrap;
+}
